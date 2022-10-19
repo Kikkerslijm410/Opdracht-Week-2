@@ -8,5 +8,6 @@ public class Program{
         Console.WriteLine("Geef uw wachtwoord");
         String? ww = Console.ReadLine();
         gebruikerContext.NieuweGebruiker(gn!, ww!);
+        Console.WriteLine("Uw gegevens zijn opgeslagen");
     }
 }

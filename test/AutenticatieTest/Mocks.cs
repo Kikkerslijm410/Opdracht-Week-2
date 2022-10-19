@@ -1,3 +1,10 @@
+/*
+    Alle mock klassen voor de testen,
+    alleen worden ze niet gebruikt, en
+    ik was te lui om ze in een aparte
+    files te zetten.
+*/
+
 public class TestGebruikerContext : IGebruikerContext{
     public List<Gebruiker> Gebruikers = new List<Gebruiker>();
 
