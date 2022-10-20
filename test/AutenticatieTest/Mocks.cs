@@ -1,10 +1,3 @@
-/*
-    Alle mock klassen voor de testen,
-    alleen worden ze niet gebruikt, en
-    ik was te lui om ze in een aparte
-    files te zetten.
-*/
-
 public class TestGebruikerContext : IGebruikerContext{
     public List<Gebruiker> Gebruikers = new List<Gebruiker>();
 
@@ -26,31 +19,6 @@ public class TestEmailService : IEmailService{
     public bool Email (String wachtwoord, String email){
         return true;
     }    
-}
-
-public class TestGebruiker : IGebruiker{
-    public string Wachtwoord {get; set;}
-    public string Email {get; set;}
-    public VerificatieToken? Token;
-
-    public TestGebruiker (string email, string wachtwoord){
-        Wachtwoord = wachtwoord;
-        Email = email;
-        this.NewToken();
-    }
-    public Boolean Geverifieerd(){
-        if (Token == null){
-            return true;
-        }
-        return false;
-    }
-    public VerificatieToken NewToken(){
-        VerificatieToken token = new VerificatieToken();
-        return token;
-    }
-    public String GetToken(Gebruiker gebruiker){
-        return gebruiker.Token.token;
-    }
 }
 
 public class TestGebruikerService : IGebruikerService{

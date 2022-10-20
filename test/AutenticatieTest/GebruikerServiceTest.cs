@@ -44,7 +44,7 @@ public class GebruikerServiceTest{
         Assert.True(!Test); //(other way of phrasing it)
     }
 
-    //mock tests
+    //moq tests
     [Theory]
     [InlineData("email", "wachtwoord")]
     public void MockLoginMetVerificatie(string email, string wachtwoord){
@@ -107,5 +107,3 @@ public class GebruikerServiceTest{
         Assert.False(poging);
     }
 }
-
-//zonder de afhankelijkheid testen, zorgen dat alleen de unit echt is 
