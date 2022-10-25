@@ -8,7 +8,7 @@ public class GebruikerServiceTest{
     //Test of de gebruiker juist wordt geverifieerd
     public void VerificatieTest(){
         // Given
-        Gebruiker gebruiker = MockGebruikerService.Registreer("email", "wachtwoord");
+        Gebruiker gebruiker = 
 
         // When
         bool resultaat = MockGebruikerService.Verifieer("email", gebruiker.Token.token);
@@ -76,7 +76,7 @@ public class GebruikerServiceTest{
     }
 
     //moq tests
-    
+
     // [Theory]
     // [InlineData("email", "wachtwoord")]
     // public void MockLoginMetVerificatie(string email, string wachtwoord){
@@ -134,24 +134,5 @@ public class GebruikerServiceTest{
 
         // Then
         Assert.False(poging);
-    }
-
-
-    //Overbodige test
-    
-    [Fact]
-    //Test of de verificatie juist werkt (dus stel de gebruiker probeert voor de tweede keer te verifiëren)
-    public void LoginMetDubbeleVerificatie(){
-        // Given
-        Gebruiker gebruiker = MockGebruikerService.Registreer("EmailTest", "WachtwoordTest");
-
-        // When
-        bool Verifieer = MockGebruikerService.Verifieer("EmailTest", "token");
-        bool Verifieer2 = MockGebruikerService.Verifieer("EmailTest", "token");
-        bool Test = MockGebruikerService.Login("EmailTest", "WachtwoordTest");
-
-        // Then
-        Assert.True(Test);
-        Assert.False(Verifieer2);
     }
 }
