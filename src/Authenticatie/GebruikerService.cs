@@ -1,8 +1,13 @@
 namespace Pretpark;
 public class GebruikerService {
-    public EmailService emailSender = new EmailService();
-    public IGebruikerContext gebruikerContext = new GebruikerContext();
+    public IEmailService emailSender;
+    public IGebruikerContext gebruikerContext;
 
+    public GebruikerService(IEmailService email, IGebruikerContext context){
+        emailSender = email;
+        gebruikerContext = context;
+    }
+    
     public Gebruiker Registreer (String email, String wachtwoord){
         if (emailSender.Email("Nieuw account", email)){
             gebruikerContext.NieuweGebruiker(email, wachtwoord);

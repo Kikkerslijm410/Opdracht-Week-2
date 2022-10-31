@@ -1,6 +1,6 @@
 namespace test;
 public class MockGebruikerContext : IGebruikerContext{
-    public List<Gebruiker> Gebruikers = new List<Gebruiker>();
+    public List<Gebruiker> Gebruikers = new List<Gebruiker>() {new Gebruiker("email", "wachtwoord")};
 
     public int AantalGebruikers(){
         return Gebruikers.Count;

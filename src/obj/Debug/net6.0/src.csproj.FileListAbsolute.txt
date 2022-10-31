@@ -28,3 +28,18 @@ c:\School\Projecten\Opdracht-Week-2\src\obj\Debug\net6.0\refint\src.dll
 c:\School\Projecten\Opdracht-Week-2\src\obj\Debug\net6.0\src.pdb
 c:\School\Projecten\Opdracht-Week-2\src\obj\Debug\net6.0\src.genruntimeconfig.cache
 c:\School\Projecten\Opdracht-Week-2\src\obj\Debug\net6.0\ref\src.dll
+D:\School\Visual Studio Code\Opdracht-Week-2\src\bin\Debug\net6.0\src.exe
+D:\School\Visual Studio Code\Opdracht-Week-2\src\bin\Debug\net6.0\src.deps.json
+D:\School\Visual Studio Code\Opdracht-Week-2\src\bin\Debug\net6.0\src.runtimeconfig.json
+D:\School\Visual Studio Code\Opdracht-Week-2\src\bin\Debug\net6.0\src.dll
+D:\School\Visual Studio Code\Opdracht-Week-2\src\bin\Debug\net6.0\src.pdb
+D:\School\Visual Studio Code\Opdracht-Week-2\src\obj\Debug\net6.0\src.csproj.AssemblyReference.cache
+D:\School\Visual Studio Code\Opdracht-Week-2\src\obj\Debug\net6.0\src.GeneratedMSBuildEditorConfig.editorconfig
+D:\School\Visual Studio Code\Opdracht-Week-2\src\obj\Debug\net6.0\src.AssemblyInfoInputs.cache
+D:\School\Visual Studio Code\Opdracht-Week-2\src\obj\Debug\net6.0\src.AssemblyInfo.cs
+D:\School\Visual Studio Code\Opdracht-Week-2\src\obj\Debug\net6.0\src.csproj.CoreCompileInputs.cache
+D:\School\Visual Studio Code\Opdracht-Week-2\src\obj\Debug\net6.0\src.dll
+D:\School\Visual Studio Code\Opdracht-Week-2\src\obj\Debug\net6.0\refint\src.dll
+D:\School\Visual Studio Code\Opdracht-Week-2\src\obj\Debug\net6.0\src.pdb
+D:\School\Visual Studio Code\Opdracht-Week-2\src\obj\Debug\net6.0\src.genruntimeconfig.cache
+D:\School\Visual Studio Code\Opdracht-Week-2\src\obj\Debug\net6.0\ref\src.dll

@@ -6,5 +6,5 @@ public interface IGebruiker{
     VerificatieToken? Token { get; set; }
     Boolean Geverifieerd();
     VerificatieToken NewToken();
-    String GetToken(Gebruiker gebruiker);
+    string GetToken(){return "token";}
 }
