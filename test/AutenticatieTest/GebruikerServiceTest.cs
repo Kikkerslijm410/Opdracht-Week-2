@@ -8,7 +8,7 @@ public class GebruikerServiceTest{
     //Test of de gebruiker juist wordt geverifieerd
     public void VerificatieTest(){
         // Given
-        Gebruiker gebruiker = 
+        Gebruiker gebruiker = new Gebruiker("email", "wachtwoord");
 
         // When
         bool resultaat = MockGebruikerService.Verifieer("email", gebruiker.Token.token);

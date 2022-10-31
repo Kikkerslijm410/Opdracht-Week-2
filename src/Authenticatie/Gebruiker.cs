@@ -1,5 +1,5 @@
 namespace Pretpark;
-public class Gebruiker {
+public class Gebruiker : IGebruiker {
     public string Wachtwoord {get; set;}
     public string Email {get; set;}
     public VerificatieToken? Token;
