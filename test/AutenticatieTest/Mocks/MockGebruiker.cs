@@ -23,7 +23,7 @@ public class MockGebruiker : IGebruiker{
         return token;
     }
 
-    public String GetToken( ){
-        return "token";
+    public String GetToken(){
+        return Token.token;
     }
 }

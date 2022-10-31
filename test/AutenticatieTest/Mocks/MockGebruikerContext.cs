@@ -14,9 +14,4 @@ public class MockGebruikerContext : IGebruikerContext{
     public List<Gebruiker> AlleGebruikers(){
         return Gebruikers;
     }
-
-    public void NieuweGebruikerZonderVerifactie(){
-        Gebruiker dummy = new Gebruiker("email", "wachtwoord");
-        Gebruikers.Add(dummy);
-    }
 }

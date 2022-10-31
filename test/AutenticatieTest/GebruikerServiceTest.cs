@@ -40,31 +40,38 @@ public class GebruikerServiceTest{
         Assert.Equal("niet gelukt", resultaat.Wachtwoord);
     }
     
-    [Fact]
-    public void VerifieerTest(){
+    [Theory]
+    [InlineData("email", "email", "token", "wachtwoord", true)]
+    [InlineData("email", "email", null, "wachtwoord", false)]
+    [InlineData("email", "email", "token2", "wachtwoord", false)]
+    [InlineData("fout", "email", "token2", "wachtwoord", false)]
+    [InlineData("email", "fout", "token2", "wachtwoord", false)]
+    //Test of de gebruiker wordt geverifieerd
+    public void VerifieerTest(String email2, String email, String token, String wachtwoord, Boolean expected){
         // Given
         GebruikerService GebruikerService = new GebruikerService(new MockEmailService(false), new MockGebruikerContext());
-
-        var expectedEmail = "email";
-        var expectedWachtwoord = "wachtwoord";
+        GebruikerService.Registreer(email, wachtwoord);
 
         // When
-        Gebruiker resultaat = GebruikerService.Registreer(expectedEmail, expectedWachtwoord);
-        
+        Boolean resultaat = GebruikerService.Verifieer(email2, token);
 
         // Then
+        Assert.Equal(expected, resultaat);
     }    
 
     [Fact]
-    public void VerifieerTest2(){
+    public void VerifieerTestVerloopDatum(){
         // Given
-
+        GebruikerService GebruikerService = new GebruikerService(new MockEmailService(false), new MockGebruikerContext());
+        Gebruiker gebruiker = new Gebruiker("email", "wachtwoord");
+        gebruiker.Token.VerloopDatum = gebruiker.Token.VerloopDatum.AddDays(-1);
 
         // When
-
+        Boolean resultaat = GebruikerService.Verifieer("email", "token");
 
         // Then
-    }  
+        Assert.False(resultaat);
+    } 
     
     
     
@@ -100,7 +107,7 @@ public class GebruikerServiceTest{
     
     [Fact]
     //Test of de gebruiker kan inloggen met verificatie
-    public void LoginTest(){
+    public void LoginTest7(){
         // Given
         Gebruiker m = GebruikerService.Registreer("email", "wachtwoord");
         GebruikerService.Verifieer("email", "token");
@@ -114,7 +121,7 @@ public class GebruikerServiceTest{
 
     [Fact]
     //Test of de gebruiker juist wordt geregistreerd
-    public void VerifieerTest(){
+    public void VerifieerTest5(){
         // Given
         Gebruiker m = GebruikerService.Registreer("email", "wachtwoord");
 

@@ -1,5 +1,5 @@
 namespace Pretpark;
-public class VerificatieToken{
+public class VerificatieToken : IVerificatieToken{
     public String? token {get; set;}
     public DateTime VerloopDatum {get; set;}
 
