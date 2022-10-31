@@ -18,6 +18,12 @@ public class MockGebruiker : IGebruiker{
         Token = this.NewToken();
     }
 
+        public MockGebruiker(string email, string wachtwoord, VerificatieToken X){
+        Wachtwoord = wachtwoord;
+        Email = email;
+        Token = X;
+    }
+
     public VerificatieToken NewToken(){
         VerificatieToken token = new VerificatieToken();
         return token;
