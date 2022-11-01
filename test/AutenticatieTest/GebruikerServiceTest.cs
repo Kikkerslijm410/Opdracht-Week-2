@@ -39,13 +39,15 @@ public class GebruikerServiceTest{
         Assert.Equal(expected, resultaat);
     }    
 
-    //[Fact]
-    //Test of de gebruiker kan verifiëren met een verlopen token
+    [Fact]
+    //Test of de gebruiker kan verifiëren met een verlopen token (aka the dumpster fire or cum dumpster)
     public void VerifieerTestVerloopDatum(){
         // Given
         MockGebruikerContext mockGebruikerContext = new MockGebruikerContext();
         GebruikerService GebruikerService = new GebruikerService(new MockEmailService(true), mockGebruikerContext);
-        Gebruiker gebruiker = new Gebruiker("email", "wachtwoord", new VerificatieToken("token", DateTime.Today.AddDays(-1)));
+        MockGebruiker gebruiker = new MockGebruiker("email", "wachtwoord");
+        gebruiker.Token.VerloopDatum = DateTime.Today.AddDays(-1);
+        //Gebruiker gebruiker = new Gebruiker("email", "wachtwoord", new Verificatie("token", DateTime.Today.AddDays(-1)));
 
         // When
         Boolean resultaat = GebruikerService.Verifieer("email", "token");
