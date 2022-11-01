@@ -2,8 +2,6 @@ namespace test;
 public class GebruikerServiceTest{
 
     //Zonder moq tests
-    public static MockGebruikerContext MockGebruikerContext = new MockGebruikerContext();
-
     [Theory]
     [InlineData("email", "wachtwoord", "email", "wachtwoord", true)]
     [InlineData("niet gelukt", "niet gelukt", "email", "wachtwoord", false)]
@@ -45,14 +43,15 @@ public class GebruikerServiceTest{
         // Given
         MockGebruikerContext mockGebruikerContext = new MockGebruikerContext();
         GebruikerService GebruikerService = new GebruikerService(new MockEmailService(true), mockGebruikerContext);
-        MockGebruiker gebruiker = new MockGebruiker("email", "wachtwoord");
+        MockGebruiker gebruiker = new MockGebruiker("email1", "wachtwoord");
         gebruiker.Token.VerloopDatum = DateTime.Today.AddDays(-1);
+
         //Gebruiker gebruiker = new Gebruiker("email", "wachtwoord", new Verificatie("token", DateTime.Today.AddDays(-1)));
 
         // When
-        Boolean resultaat = GebruikerService.Verifieer("email", "token");
+        Boolean resultaat = GebruikerService.Verifieer("email1", "token");
 
-        // Then
+        // Then 
         Assert.False(resultaat);
     }
 
@@ -141,6 +140,25 @@ public class GebruikerServiceTest{
         var MockMail = new Mock<IEmailService>();
         var MockContext = new Mock<IGebruikerContext>();
         MockContext.Setup(x => x.AlleGebruikers()).Returns(new List<Gebruiker>(){new Gebruiker("emailtest", "wachtwoordtest"), new Gebruiker(email, wachtwoord)});
+
+        // When
+        var gebruikerService = new GebruikerService(MockMail.Object, MockContext.Object);
+        var resultaat = gebruikerService.Verifieer(email2, token);
+
+        // Then
+        Assert.Equal(expected, resultaat);
+
+        MockContext.Verify(x => x.AlleGebruikers(), Times.Exactly(1));
+    }
+
+    [Theory]
+    [InlineData("email", "email", "token", "wachtwoord", false)]
+    //Test of de gebruiker kan verifiëren met een verlopen token (aka the dumpster fire or cum dumpster, this one less tho)
+    public void MoqVerifieerTestVerloopDatum(string email2, string email, string token, string wachtwoord, Boolean expected){
+        // Given
+        var MockMail = new Mock<IEmailService>();
+        var MockContext = new Mock<IGebruikerContext>();
+        MockContext.Setup(x => x.AlleGebruikers()).Returns(new List<Gebruiker>(){new Gebruiker("emailtest", "wachtwoordtest"), new Gebruiker(email, wachtwoord, new VerificatieToken(token, DateTime.Now.AddDays(-1)))});
 
         // When
         var gebruikerService = new GebruikerService(MockMail.Object, MockContext.Object);

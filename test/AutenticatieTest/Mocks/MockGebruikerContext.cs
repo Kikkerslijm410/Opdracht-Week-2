@@ -1,5 +1,6 @@
 namespace test;
 public class MockGebruikerContext : IGebruikerContext{
+    //this new gebruiker can suck deez nuts
     public List<Gebruiker> Gebruikers = new List<Gebruiker>() {new Gebruiker("email", "wachtwoord")};
 
     public int AantalGebruikers(){
