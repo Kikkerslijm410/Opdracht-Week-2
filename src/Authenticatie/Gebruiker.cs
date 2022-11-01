@@ -17,6 +17,12 @@ public class Gebruiker : IGebruiker {
         Token = this.NewToken();
     }
 
+    public Gebruiker (string email, string wachtwoord, VerificatieToken token){
+        Wachtwoord = wachtwoord;
+        Email = email;
+        Token = token;
+    }
+
     public VerificatieToken NewToken(){
         VerificatieToken token = new VerificatieToken();
         return token;

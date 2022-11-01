@@ -3,19 +3,17 @@ public class GebruikerServiceTest{
 
     //Zonder moq tests
     public static MockGebruikerContext MockGebruikerContext = new MockGebruikerContext();
-    public static MockEmailService MockEmailService = new MockEmailService(true);
-    public GebruikerService GebruikerService = new GebruikerService(MockEmailService, MockGebruikerContext);
 
     [Theory]
-    [InlineData("email", "wachtwoord")]
-    [InlineData("niet gelukt", "niet gelukt")]
+    [InlineData("email", "wachtwoord", "email", "wachtwoord", true)]
+    [InlineData("niet gelukt", "niet gelukt", "email", "wachtwoord", false)]
     //Test of de gebruiker wordt aangemaakt als de email wel verzonden kan worden
-    public void RegistreerTest(string expectedEmail, string expectedWachtwoord){
+    public void RegistreerTest(string expectedEmail, string expectedWachtwoord, string actualEmail, string actualWachtwoord, bool emailVerzonden){
         // Given
-        GebruikerService gebruikerService = new GebruikerService(new MockEmailService(true), new MockGebruikerContext());
+        GebruikerService gebruikerService = new GebruikerService(new MockEmailService(emailVerzonden), new MockGebruikerContext());
 
         // When
-        Gebruiker resultaat = GebruikerService.Registreer(expectedEmail, expectedWachtwoord);
+        Gebruiker resultaat = gebruikerService.Registreer(actualEmail, actualWachtwoord);
 
         // Then
         Assert.Equal(expectedEmail, resultaat.Email);
@@ -31,7 +29,7 @@ public class GebruikerServiceTest{
     //Test of de gebruiker wordt geverifieerd
     public void VerifieerTest(String email2, String email, String token, String wachtwoord, Boolean expected){
         // Given
-        GebruikerService GebruikerService = new GebruikerService(new MockEmailService(false), new MockGebruikerContext());
+        GebruikerService GebruikerService = new GebruikerService(new MockEmailService(true), new MockGebruikerContext());
         GebruikerService.Registreer(email, wachtwoord);
 
         // When
@@ -41,11 +39,13 @@ public class GebruikerServiceTest{
         Assert.Equal(expected, resultaat);
     }    
 
-    [Fact]
+    //[Fact]
+    //Test of de gebruiker kan verifiëren met een verlopen token
     public void VerifieerTestVerloopDatum(){
         // Given
-        GebruikerService GebruikerService = new GebruikerService(new MockEmailService(false), new MockGebruikerContext());
-        MockGebruiker Mgebruiker = new MockGebruiker("email", "wachtwoord", new VerificatieToken("token", DateTime.));
+        MockGebruikerContext mockGebruikerContext = new MockGebruikerContext();
+        GebruikerService GebruikerService = new GebruikerService(new MockEmailService(true), mockGebruikerContext);
+        Gebruiker gebruiker = new Gebruiker("email", "wachtwoord", new VerificatieToken("token", DateTime.Today.AddDays(-1)));
 
         // When
         Boolean resultaat = GebruikerService.Verifieer("email", "token");
@@ -54,5 +54,51 @@ public class GebruikerServiceTest{
         Assert.False(resultaat);
     }
 
-     //login moet hier
+    [Fact]
+    // Test of de gebruiker kan inloggen zonder dat deze geverifieerd is
+    public void LoginTestZonderVerificatie(){
+        // Given
+        GebruikerService GebruikerService = new GebruikerService(new MockEmailService(true), new MockGebruikerContext());
+        GebruikerService.Registreer("email", "wachtwoord");
+
+        // When
+        bool resultaat = GebruikerService.Login("email", "wachtwoord");
+
+        // Then
+        Assert.False(resultaat);
+    }
+
+    [Fact]
+    // Test of de gebruiker kan inloggen nadat deze geverifieerd is
+    public void LoginTestMetVerificatie(){
+        // Given
+        GebruikerService GebruikerService = new GebruikerService(new MockEmailService(true), new MockGebruikerContext());
+        GebruikerService.Registreer("email", "wachtwoord");
+
+        // When
+        GebruikerService.Verifieer("email", "token");
+        bool resultaat = GebruikerService.Login("email", "wachtwoord");
+
+        // Then
+        Assert.True(resultaat);
+    }
+
+    [Theory]
+    [InlineData("email", "wachtwoord", "token", true)]
+    [InlineData("email", "wachtwoord", "token", false)]
+    // Combinatie van bovenstaande tests
+    public void LoginTestCombined(string email, string wachtwoord, string token, bool verifieer){
+        // Given
+        GebruikerService GebruikerService = new GebruikerService(new MockEmailService(true), new MockGebruikerContext());
+        GebruikerService.Registreer(email, wachtwoord);
+        if(verifieer){
+            GebruikerService.Verifieer(email, token);
+        }
+
+        // When
+        bool resultaat = GebruikerService.Login(email, wachtwoord);
+
+        // Then
+        Assert.Equal(verifieer, resultaat);
+    }
 }

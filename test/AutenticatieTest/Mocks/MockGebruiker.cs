@@ -18,7 +18,7 @@ public class MockGebruiker : IGebruiker{
         Token = this.NewToken();
     }
 
-        public MockGebruiker(string email, string wachtwoord, VerificatieToken X){
+    public MockGebruiker(string email, string wachtwoord, VerificatieToken X){
         Wachtwoord = wachtwoord;
         Email = email;
         Token = X;
@@ -30,6 +30,6 @@ public class MockGebruiker : IGebruiker{
     }
 
     public String GetToken(){
-        return Token.token;
+        return "token";
     }
 }
