@@ -101,4 +101,74 @@ public class GebruikerServiceTest{
         // Then
         Assert.Equal(verifieer, resultaat);
     }
+
+    //Met Mock test
+    [Theory]
+    [InlineData("email", "wachtwoord", "email", "wachtwoord", true, 1)]
+    [InlineData("niet gelukt", "niet gelukt", "email", "wachtwoord", false, 0)]
+    public void MoqRegistreerTest(string expectedEmail, string expectedWachtwoord, string actualEmail, string actualWachtwoord, bool emailVerzonden, int x){
+        // Given
+        var MockMail = new Mock<IEmailService>();
+        MockMail.Setup(x => x.Email(It.IsAny<string>(), It.IsAny<string>())).Returns(emailVerzonden);
+        //MockMail.Setup((x) => x.Email("x", "y")).Returns(true);
+
+        var MockContext = new Mock<IGebruikerContext>();
+        MockContext.Setup(x => x.AantalGebruikers()).Returns(1);
+        MockContext.Setup(x => x.GetGebruiker(It.IsAny<int>())).Returns(new Gebruiker(actualEmail, actualWachtwoord));
+
+        // When
+        var gebruikerService = new GebruikerService(MockMail.Object, MockContext.Object);
+        var gebruiker = gebruikerService.Registreer(actualEmail, actualWachtwoord);
+
+        // Then
+        Assert.Equal(expectedEmail, gebruiker.Email);
+        Assert.Equal(expectedWachtwoord, gebruiker.Wachtwoord);
+
+        MockMail.Verify(x => x.Email(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        MockContext.Verify(x => x.AantalGebruikers(), Times.Exactly(x));
+    }
+
+    [Theory]
+    [InlineData("email", "email", "token", "wachtwoord", true)]
+    [InlineData("email", "email", null, "wachtwoord", false)]
+    [InlineData("email", "email", "token2", "wachtwoord", false)]
+    [InlineData("fout", "email", "token2", "wachtwoord", false)]
+    [InlineData("email", "fout", "token2", "wachtwoord", false)]
+    public void MoqVerifieerTest(string email2, string email, string token, string wachtwoord, Boolean expected){
+        // Given
+        var MockMail = new Mock<IEmailService>();
+        var MockContext = new Mock<IGebruikerContext>();
+        MockContext.Setup(x => x.AlleGebruikers()).Returns(new List<Gebruiker>(){new Gebruiker("emailtest", "wachtwoordtest"), new Gebruiker(email, wachtwoord)});
+
+        // When
+        var gebruikerService = new GebruikerService(MockMail.Object, MockContext.Object);
+        var resultaat = gebruikerService.Verifieer(email2, token);
+
+        // Then
+        Assert.Equal(expected, resultaat);
+
+        MockContext.Verify(x => x.AlleGebruikers(), Times.Exactly(1));
+    }
+
+    [Theory]
+    [InlineData("email", "wachtwoord", "token", true, 1)]
+    [InlineData("email", "wachtwoord", "token", false, 2)]
+    public void MoqLoginTest(string email, string wachtwoord, string token, bool verifieer, int x){
+        // Given
+        var MockMail = new Mock<IEmailService>();
+        var MockContext = new Mock<IGebruikerContext>();
+        MockContext.Setup(x => x.AlleGebruikers()).Returns(new List<Gebruiker>(){new Gebruiker("emailtest", "wachtwoordtest"), new Gebruiker(email, wachtwoord)});
+
+        // When
+        var gebruikerService = new GebruikerService(MockMail.Object, MockContext.Object);
+        if(verifieer){
+            gebruikerService.Verifieer(email, token);
+        }
+        var resultaat = gebruikerService.Login(email, wachtwoord);
+
+        // Then
+        Assert.Equal(verifieer, resultaat);
+
+        MockContext.Verify(x => x.AlleGebruikers(), Times.AtLeastOnce);
+    }
 }
