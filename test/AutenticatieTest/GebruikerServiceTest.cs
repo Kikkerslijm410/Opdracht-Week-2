@@ -5,7 +5,7 @@ public class GebruikerServiceTest{
     [Theory]
     [InlineData("email", "wachtwoord", "email", "wachtwoord", true)]
     [InlineData("niet gelukt", "niet gelukt", "email", "wachtwoord", false)]
-    //Test of de gebruiker wordt aangemaakt als de email wel verzonden kan worden
+    //Test of de gebruiker wordt aangemaakt als de email wel of niet verzonden kan worden
     public void RegistreerTest(string expectedEmail, string expectedWachtwoord, string actualEmail, string actualWachtwoord, bool emailVerzonden){
         // Given
         GebruikerService gebruikerService = new GebruikerService(new MockEmailService(emailVerzonden), new MockGebruikerContext());
@@ -107,6 +107,7 @@ public class GebruikerServiceTest{
     [Theory]
     [InlineData("email", "wachtwoord", "email", "wachtwoord", true, 1)]
     [InlineData("niet gelukt", "niet gelukt", "email", "wachtwoord", false, 0)]
+    //Test of de gebruiker wordt aangemaakt als de email wel of niet verzonden kan worden
     public void MoqRegistreerTest(string expectedEmail, string expectedWachtwoord, string actualEmail, string actualWachtwoord, bool emailVerzonden, int x){
         // Given
         var MockMail = new Mock<IEmailService>();
@@ -135,6 +136,7 @@ public class GebruikerServiceTest{
     [InlineData("email", "email", "token2", "wachtwoord", false)]
     [InlineData("fout", "email", "token2", "wachtwoord", false)]
     [InlineData("email", "fout", "token2", "wachtwoord", false)]
+    //Test of de gebruiker wordt geverifieerd
     public void MoqVerifieerTest(string email2, string email, string token, string wachtwoord, Boolean expected){
         // Given
         var MockMail = new Mock<IEmailService>();
@@ -173,6 +175,7 @@ public class GebruikerServiceTest{
     [Theory]
     [InlineData("email", "wachtwoord", "token", true, 1)]
     [InlineData("email", "wachtwoord", "token", false, 2)]
+    // Test of de gebruiker kan inloggen met en zonder verificatie
     public void MoqLoginTest(string email, string wachtwoord, string token, bool verifieer, int x){
         // Given
         var MockMail = new Mock<IEmailService>();
